@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gong cha Korea</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Raleway:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #fbfbfb;
+      color: #333333;
+      font-family: 'Noto Sans KR', sans-serif;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; }
+
+    /* ══════════════════════════════
+       1. HEADER  ─  full width / inner 1350×120
+       수정: 로고·네비 가운데 여백 없이 붙여서 배치
+    ══════════════════════════════ */
+    #header {
+      width: 100%;
+      background: #fff;
+      border-bottom: 1px solid #e8e8e8;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    /* 로고 + 카테고리 전체를 동일 여백으로 한 줄 배치 */
+    .header-inner {
+      width: 1350px;
+      height: 120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      flex-shrink: 0;
+    }
+    .logo img {
+      width: auto;
+      height: 90px;
+    }
+    /* ── 카테고리 아이템 (드롭다운 포함) ── */
+    .nav-item {
+      position: relative;
+      align-self: stretch;        /* 헤더 전체 높이로 확장 → hover 끊김 방지 */
+      display: flex;
+      align-items: center;
+    }
+    .nav-link {
+      font-family: 'Hahmlet', serif;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: #333;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .nav-item:hover .nav-link { color: #c30e2e; }
+
+    /* ── 드롭다운 메뉴 ── */
+    .dropdown {
+      position: absolute;
+      top: 76px;                  /* 헤더 중앙 텍스트 바로 아래 위치 */
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      min-width: 150px;
+      background: #fff;
+      border-top: 2px solid #c30e2e;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      z-index: 200;
+    }
+    .nav-item:hover .dropdown {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    .dropdown a {
+      display: block;
+      padding: 11px 20px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px;
+      color: #333;
+      white-space: nowrap;
+      border-bottom: 1px solid #efefef;
+      transition: background 0.18s, color 0.18s;
+    }
+    .dropdown a:last-child { border-bottom: none; }
+    .dropdown a:hover {
+      background: #c30e2e;
+      color: #fff;
+    }
+
+    /* ══════════════════════════════
+       2. 메인 배너  ─  full width / 1960×850
+       수정: 무한 연속 슬라이드 (끝→처음 자연스럽게)
+    ══════════════════════════════ */
+    #banner {
+      width: 100%;
+      height: 850px;
+      overflow: hidden;
+      position: relative;
+    }
+    .slides-track {
+      display: flex;
+      height: 100%;
+      /* transition은 JS에서 제어 */
+    }
+    .slide { min-width: 100%; height: 100%; }
+    .slide a { display: block; width: 100%; height: 100%; cursor: pointer; }
+    .slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+    .banner-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.35);
+      border: none;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 30px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+    .banner-btn:hover { background: rgba(195,14,46,0.75); }
+    .banner-btn.prev { left: 24px; }
+    .banner-btn.next { right: 24px; }
+
+    .dots {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .dot.active { background: #fff; }
+
+    /* ══════════════════════════════
+       공통 : 1600px 센터 / 메인컬러
+    ══════════════════════════════ */
+    .block-1600 {
+      width: 1600px;
+      margin: 0 auto;
+      background: #f5f4f2;
+    }
+    .spacer-1 { height: 60px; }
+    .spacer-2 { height: 100px; }
+    .spacer-3 { height: 100px; }
+    .spacer-4 { height: 50px; }
+
+    /* ══════════════════════════════
+       3. 메뉴 섹션  ─  1600×400
+    ══════════════════════════════ */
+    #menu-section {
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 50px;
+    }
+    .quick-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    .quick-btn {
+      width: 150px;
+      height: 50px;
+      background: #c30e2e;
+      color: #fff;
+      border: none;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .quick-btn:hover { background: #a00a25; transform: translateX(4px); }
+
+    /* 메뉴 상품 4개  220×300 */
+    .menu-list {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .menu-item img {
+      width: 220px;
+      height: 300px;
+      object-fit: contain;
+      transition: transform 0.25s;
+    }
+    .menu-item:hover img { transform: translateY(-6px); }
+    .menu-item p {
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* ══════════════════════════════
+       4. HOW TO ORDER  ─  1600×350
+          sub_2=700×350 / sub_1=400×350
+    ══════════════════════════════ */
+    #how-to-order {
+      height: 350px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .how-left {
+      width: 700px; height: 350px;
+      overflow: hidden; flex-shrink: 0; cursor: pointer;
+    }
+    .how-left img { width: 700px; height: 350px; object-fit: cover; transition: transform 0.35s; }
+    .how-left:hover img { transform: scale(1.03); }
+
+    .how-right {
+      width: 400px; height: 350px;
+      overflow: hidden; flex-shrink: 0; cursor: pointer;
+    }
+    .how-right img { width: 400px; height: 350px; object-fit: cover; transition: transform 0.35s; }
+    .how-right:hover img { transform: scale(1.03); }
+
+    /* ══════════════════════════════
+       5. 멤버십 / 매장검색 / 오픈매장  ─  1600×250
+          sub_3=600×250 / search=300×250 / sub_4=250×250
+    ══════════════════════════════ */
+    #membership-section {
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    /* 멤버십 블록 - 사진 클릭 불가, 버튼만 클릭 */
+    .mem-block {
+      width: 600px; height: 250px;
+      position: relative;
+      overflow: hidden; flex-shrink: 0;
+    }
+    .mem-block img { width: 600px; height: 250px; object-fit: cover; }
+    /* 배너 이미지의 '멤버십바로가기' 텍스트 위에 정확히 오버레이 */
+    .mem-link-btn {
+      position: absolute;
+      bottom: 50px;
+      right: 65px;
+      background: #c30e2e;
+      color: #fff;
+      padding: 7px 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      z-index: 2;
+    }
+    .mem-link-btn:hover { background: #a00a25; }
+
+    .store-search {
+      width: 300px; height: 250px;
+      flex-shrink: 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 0 20px;
+    }
+    .store-search h3 {
+      font-family: 'Raleway', sans-serif;
+      font-size: 17px; font-weight: 700;
+      color: #333; letter-spacing: 0.04em;
+    }
+    .store-search p { font-size: 11px; color: #888; text-align: center; line-height: 1.5; }
+    .search-row {
+      display: flex;
+      width: 100%;
+      border: 1.5px solid #c30e2e;
+      overflow: hidden;
+    }
+    .search-row input {
+      flex: 1; padding: 9px 10px;
+      border: none; outline: none;
+      font-size: 12px; font-family: 'Noto Sans KR', sans-serif;
+      min-width: 0;
+    }
+    .search-row button {
+      background: #c30e2e; color: #fff;
+      border: none; padding: 9px 14px;
+      cursor: pointer; font-size: 12px; font-weight: 700;
+      font-family: 'Noto Sans KR', sans-serif;
+      white-space: nowrap; transition: background 0.2s;
+    }
+    .search-row button:hover { background: #a00a25; }
+
+    /* NEW OPEN - 클릭만 가능, 호버 줌 없음 */
+    .newopen-block {
+      width: 250px; height: 250px;
+      overflow: hidden; flex-shrink: 0; cursor: pointer;
+    }
+    .newopen-block img { width: 250px; height: 250px; object-fit: cover; }
+
+    /* ══════════════════════════════
+       6. SNS 바  ─  full width / inner 1600×77
+       수정: icon_4,5,6만 / 왼쪽 여백 두고 오른쪽 배치
+    ══════════════════════════════ */
+    #sns-bar {
+      width: 100%;
+      background: #c30e2e;
+    }
+    .sns-inner {
+      width: 1600px;
+      height: 77px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;   /* 오른쪽 정렬 */
+      gap: 18px;
+      padding-right: 60px;
+    }
+    .sns-inner a {
+      width: 46px; height: 46px;
+      display: flex; align-items: center; justify-content: center;
+      background: #c30e2e;   /* icon 주변 흰색 테두리 제거 */
+      overflow: hidden;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .sns-inner a:hover { opacity: 0.85; }
+    .sns-inner a img {
+      width: 46px; height: 46px;
+      object-fit: cover;
+    }
+
+    /* ══════════════════════════════
+       7. 푸터  ─  full width / inner 1600×253
+       수정: 가운데 여백 두고 텍스트 왼쪽 정렬
+    ══════════════════════════════ */
+    #footer {
+      width: 100%;
+      background: #888686;
+    }
+    .footer-inner {
+      width: 1600px;
+      height: 253px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 140px;   /* 로고·카피라이트 사이 여백 확대 */
+    }
+    /* 로고 350×200 */
+    .footer-logo {
+      width: 350px; height: 200px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .footer-logo img {
+      width: 350px; height: 200px;
+      object-fit: contain;
+    }
+    /* 텍스트 오른쪽 정렬 */
+    .footer-info {
+      color: #ccc;
+      font-size: 12px;
+      line-height: 2.1;
+      text-align: right;         /* 글씨 오른쪽 붙이기 */
+    }
+    .footer-info p { white-space: nowrap; }
+    .footer-info .f-addr { color: #ddd; margin-bottom: 2px; }
+    .footer-info .f-lbl { font-weight: 700; color: #fff; margin-right: 4px; }
+    .footer-copyright {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #aaa;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ 1. HEADER ══════════ -->
+<header id="header">
+  <div class="header-inner">
+    <a href="javascript:location.reload()" class="logo">
+      <img src="assets/img/logo_03.png" alt="Gong cha" />
+    </a>
+    <div class="nav-item">
+      <a class="nav-link" href="#">Brand</a>
+      <div class="dropdown">
+        <a href="#">브랜드 소개</a>
+        <a href="#">공차의 철학</a>
+        <a href="#">브랜드 히스토리</a>
+        <a href="#">미디어 센터</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a class="nav-link" href="#">Menu</a>
+      <div class="dropdown">
+        <a href="#">음료</a>
+        <a href="#">디저트</a>
+        <a href="#">MD상품</a>
+        <a href="#">시즌 한정 메뉴</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a class="nav-link" href="#">Store</a>
+      <div class="dropdown">
+        <a href="#">매장 찾기</a>
+        <a href="#">신규 오픈 매장</a>
+        <a href="#">가맹 문의</a>
+        <a href="#">해외 매장</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a class="nav-link" href="#">Membership</a>
+      <div class="dropdown">
+        <a href="#">멤버십 소개</a>
+        <a href="#">포인트 안내</a>
+        <a href="#">등급 혜택</a>
+        <a href="#">앱 다운로드</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a class="nav-link" href="#">Benefit</a>
+      <div class="dropdown">
+        <a href="#">진행 중 이벤트</a>
+        <a href="#">쿠폰 다운로드</a>
+        <a href="#">제휴 혜택</a>
+        <a href="#">스탬프</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a class="nav-link" href="#">Event&amp;News</a>
+      <div class="dropdown">
+        <a href="#">이벤트</a>
+        <a href="#">공차 소식</a>
+        <a href="#">보도 자료</a>
+        <a href="#">뉴스레터</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a class="nav-link" href="#">공지사항</a>
+      <div class="dropdown">
+        <a href="#">전체 공지</a>
+        <a href="#">서비스 공지</a>
+        <a href="#">개인정보처리방침</a>
+        <a href="#">이용약관</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ 2. 메인 배너 슬라이더 (무한루프) ══════════ -->
+<section id="banner">
+  <div class="slides-track" id="slidesTrack">
+    <!-- [0] 마지막 슬라이드 복제본 (앞쪽 clone) -->
+    <div class="slide clone"><a href="#"><img src="assets/banners/banner_main_1.jpg" alt="clone-last" /></a></div>
+    <!-- [1] 실제 슬라이드 1 -->
+    <div class="slide"><a href="#"><img src="assets/banners/banner_main_3.jpg" alt="Melon Melon" /></a></div>
+    <!-- [2] 실제 슬라이드 2 -->
+    <div class="slide"><a href="#"><img src="assets/banners/banner_main_2.jpg" alt="빙수쉐이크" /></a></div>
+    <!-- [3] 실제 슬라이드 3 -->
+    <div class="slide"><a href="#"><img src="assets/banners/banner_main_1.jpg" alt="Big Event" /></a></div>
+    <!-- [4] 첫 슬라이드 복제본 (뒤쪽 clone) -->
+    <div class="slide clone"><a href="#"><img src="assets/banners/banner_main_3.jpg" alt="clone-first" /></a></div>
+  </div>
+  <button class="banner-btn prev" id="prevBtn">&#8249;</button>
+  <button class="banner-btn next" id="nextBtn">&#8250;</button>
+  <div class="dots" id="dots">
+    <div class="dot active" onclick="goSlide(1)"></div>
+    <div class="dot" onclick="goSlide(2)"></div>
+    <div class="dot" onclick="goSlide(3)"></div>
+  </div>
+</section>
+
+<!-- ══════════ 여백 1 (1600×60) ══════════ -->
+<div class="block-1600 spacer-1"></div>
+
+<!-- ══════════ 3. 메뉴 섹션 (1600×400) ══════════ -->
+<section id="menu-section" class="block-1600">
+  <div class="quick-btns">
+    <button class="quick-btn">음 료</button>
+    <button class="quick-btn">디저트</button>
+    <button class="quick-btn">MD 상품</button>
+  </div>
+  <div class="menu-list">
+    <div class="menu-item">
+      <img src="assets/img/img_1.png" alt="타로 쥬얼리 시그니처 밀크티" />
+      <p>타로 쥬얼리 시그니처 밀크티</p>
+    </div>
+    <div class="menu-item">
+      <img src="assets/img/img_2.png" alt="타로 쥬얼리 시그니처 스무디" />
+      <p>타로 쥬얼리 시그니처 스무디</p>
+    </div>
+    <div class="menu-item">
+      <img src="assets/img/img_3.png" alt="말차 팥 빙수 쉐이크" />
+      <p>말차 팥 빙수 쉐이크</p>
+    </div>
+    <div class="menu-item">
+      <img src="assets/img/img_4.png" alt="로얄 밀크티 팥 빙수 쉐이크" />
+      <p>로얄 밀크티 팥 빙수 쉐이크</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 여백 2 (1600×150) ══════════ -->
+<div class="block-1600 spacer-2"></div>
+
+<!-- ══════════ 4. HOW TO ORDER (1600×350) ══════════ -->
+<section id="how-to-order" class="block-1600">
+  <div class="how-left">
+    <img src="assets/banners/banner_sub_2.jpg" alt="공차가 처음이신가요? HOW TO ORDER" />
+  </div>
+  <div class="how-right">
+    <img src="assets/banners/banner_sub_1.jpg" alt="Felix Pick 한정 굿즈 GET" />
+  </div>
+</section>
+
+<!-- ══════════ 여백 3 (1600×100) ══════════ -->
+<div class="block-1600 spacer-3"></div>
+
+<!-- ══════════ 5. 멤버십 / 매장검색 / 오픈매장 (1600×250) ══════════ -->
+<section id="membership-section" class="block-1600">
+  <div class="mem-block">
+    <img src="assets/banners/banner_sub_3.jpg" alt="공차 멤버십 가입" />
+    <a href="javascript:void(0)" class="mem-link-btn">멤버십 바로가기</a>
+  </div>
+  <div class="store-search">
+    <h3>STORE LOCATION</h3>
+    <p>가까운 공차 매장을<br>검색해보세요</p>
+    <div class="search-row">
+      <input type="text" placeholder="지역명 또는 매장명" />
+      <button>검색</button>
+    </div>
+  </div>
+  <div class="newopen-block">
+    <img src="assets/banners/banner_sub_4.jpg" alt="신규 오픈매장 안내" />
+  </div>
+</section>
+
+<!-- ══════════ 여백 4 (1600×50) ══════════ -->
+<div class="block-1600 spacer-4"></div>
+
+<!-- ══════════ 6. SNS 바 ─ icon_4,5,6 / 오른쪽 배치 ══════════ -->
+<section id="sns-bar">
+  <div class="sns-inner">
+    <a href="https://www.instagram.com/gongcha_korea/" target="_blank" class="sns-insta"><img src="assets/icons/icon_4.png" alt="Instagram" /></a>
+    <a href="https://www.facebook.com/GongCha.Korea" target="_blank"><img src="assets/icons/icon_5.png" alt="Facebook" /></a>
+    <a href="https://pf.kakao.com/_Cywfxb" target="_blank"><img src="assets/icons/icon_6.png" alt="KakaoTalk" /></a>
+  </div>
+</section>
+
+<!-- ══════════ 7. 푸터 ══════════ -->
+<footer id="footer">
+  <div class="footer-inner">
+
+    <!-- 로고 350×200 -->
+    <div class="footer-logo">
+      <img src="assets/banners/banner_sub_5.jpg" alt="Gong cha Logo" />
+    </div>
+
+    <!-- 가운데 여백 -->
+    <div class="footer-gap"></div>
+
+    <!-- 카피라이트 텍스트 (왼쪽 정렬, 항목 통합) -->
+    <div class="footer-info">
+      <p class="f-addr">서울 종로구 종로33길 15, 8층 (주)공차코리아 대표이사 고희경</p>
+      <p>
+        <span class="f-lbl">사업자등록번호</span>214-88-84534
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span class="f-lbl">통신판매번호</span>2020-서울종로-0966
+      </p>
+      <p>
+        <span class="f-lbl">고객센터</span>02-779-7758
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span class="f-lbl">가맹문의</span>02-3276-9581
+      </p>
+      <p>
+        <span class="f-lbl">운영시간</span>월 ~ 금 (09:00 ~ 18:00) &nbsp;|&nbsp; 주말 및 공휴일 휴무
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span class="f-lbl">점심시간</span>12:00 ~ 13:00
+      </p>
+      <p class="footer-copyright">© GONGCHA KOREA CO.,LTD ALL RIGHTS RESERVED.</p>
+    </div>
+
+  </div>
+</footer>
+
+<!-- ══════════ 무한 슬라이더 스크립트 ══════════ -->
+<script>
+  const REAL_COUNT = 3;            // 실제 슬라이드 수
+  const TOTAL     = REAL_COUNT + 2; // clone 포함 총 5장
+  let curIdx   = 1;                // 시작 위치 (실제 첫 슬라이드)
+  let isMoving = false;
+
+  const track  = document.getElementById('slidesTrack');
+  const dotEls = document.querySelectorAll('.dot');
+
+  /* 위치 이동 (animate=false 이면 순간 이동) */
+  function moveTo(idx, animate) {
+    track.style.transition = animate
+      ? 'transform 0.7s cubic-bezier(0.77, 0, 0.175, 1)'
+      : 'none';
+    track.style.transform  = `translateX(-${idx * 100}%)`;
+    curIdx = idx;
+    // 도트: 실제 슬라이드 인덱스(1~3) → 도트(0~2)
+    const dotIdx = (idx - 1 + REAL_COUNT) % REAL_COUNT;
+    dotEls.forEach((d, i) => d.classList.toggle('active', i === dotIdx));
+  }
+
+  /* 트랜지션 끝난 뒤 clone → real 순간이동 */
+  track.addEventListener('transitionend', () => {
+    if (curIdx === REAL_COUNT + 1) moveTo(1, false);  // 뒤 clone → 첫 real
+    if (curIdx === 0)              moveTo(REAL_COUNT, false); // 앞 clone → 마지막 real
+    isMoving = false;
+  });
+
+  function moveBanner(dir) {
+    if (isMoving) return;
+    isMoving = true;
+    moveTo(curIdx + dir, true);
+    resetAuto();
+  }
+
+  function goSlide(realIdx) {   // realIdx: 1~3
+    if (isMoving) return;
+    moveTo(realIdx, true);
+    resetAuto();
+  }
+
+  document.getElementById('prevBtn').onclick = () => moveBanner(-1);
+  document.getElementById('nextBtn').onclick = () => moveBanner(1);
+
+  /* 자동 슬라이드 */
+  let autoTimer = setInterval(() => moveBanner(1), 4500);
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => moveBanner(1), 4500);
+  }
+
+  /* 초기 위치 설정 (애니 없이) */
+  moveTo(1, false);
+</script>
+
+</body>
+</html>
