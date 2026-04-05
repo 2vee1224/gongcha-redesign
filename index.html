@@ -415,9 +415,88 @@
       color: #aaa;
       letter-spacing: 0.03em;
     }
+
+    /* ══════════════════════════════
+       퀵메뉴 ─ 우측 고정 / 82×400 / 스크롤 따라가기
+    ══════════════════════════════ */
+    #quick-menu {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 82px;
+      height: 350px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-right: none;
+      box-shadow: -3px 0 14px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      z-index: 500;
+    }
+    .quick-menu-item {
+      width: 82px;
+      height: 80px;
+      background: #fff;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.22s, border-color 0.22s;
+      flex-shrink: 0;
+    }
+    .quick-menu-item:hover {
+      background: #c30e2e;
+    }
+    .quick-menu-item img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      transition: filter 0.22s;
+    }
+    .quick-menu-item:hover img {
+      filter: brightness(0) invert(1);
+    }
+    .quick-menu-item span {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: #333;
+      letter-spacing: 0.01em;
+      text-align: center;
+      line-height: 1.4;
+      word-break: keep-all;
+      transition: color 0.22s;
+    }
+    .quick-menu-item:hover span {
+      color: #fff;
+    }
   </style>
 </head>
 <body>
+
+<!-- ══════════ 퀵메뉴 (우측 고정) ══════════ -->
+<nav id="quick-menu">
+  <a href="javascript:void(0)" class="quick-menu-item">
+    <img src="assets/icons/icon_1.png" alt="가맹점문의" />
+    <span>가맹점<br>문의</span>
+  </a>
+  <a href="javascript:void(0)" class="quick-menu-item">
+    <img src="assets/icons/icon_2.png" alt="단체주문안내" />
+    <span>단체주문<br>안내</span>
+  </a>
+  <a href="javascript:void(0)" class="quick-menu-item">
+    <img src="assets/icons/icon_3.png" alt="이달의직원칭찬" />
+    <span>이달의<br>직원칭찬</span>
+  </a>
+</nav>
 
 <!-- ══════════ 1. HEADER ══════════ -->
 <header id="header">
