@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Membership – Gong cha Korea</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Raleway:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #fbfbfb;
+      color: #333333;
+      font-family: 'Noto Sans KR', sans-serif;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; }
+
+    /* ══════════════════════════════
+       HEADER
+    ══════════════════════════════ */
+    #header {
+      width: 100%;
+      background: #fff;
+      border-bottom: 1px solid #e8e8e8;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      width: 1350px;
+      height: 120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { flex-shrink: 0; }
+    .logo img { width: auto; height: 90px; }
+
+    .nav-item {
+      position: relative;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+    }
+    .nav-link {
+      font-family: 'Hahmlet', serif;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: #333;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .nav-item:hover .nav-link { color: #c30e2e; }
+
+    .dropdown {
+      position: absolute;
+      top: 76px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      min-width: 150px;
+      background: #fff;
+      border-top: 2px solid #c30e2e;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      z-index: 200;
+    }
+    .nav-item:hover .dropdown {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    .dropdown a {
+      display: block;
+      padding: 11px 20px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 13px;
+      color: #333;
+      white-space: nowrap;
+      border-bottom: 1px solid #efefef;
+      transition: background 0.18s, color 0.18s;
+    }
+    .dropdown a:last-child { border-bottom: none; }
+    .dropdown a:hover { background: #c30e2e; color: #fff; }
+
+    /* ══════════════════════════════
+       퀵메뉴
+    ══════════════════════════════ */
+    #quick-menu {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 82px;
+      height: 350px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-right: none;
+      box-shadow: -3px 0 14px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      z-index: 500;
+    }
+    .quick-menu-item {
+      width: 82px;
+      height: 80px;
+      background: #fff;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.22s, border-color 0.22s;
+      flex-shrink: 0;
+    }
+    .quick-menu-item:hover { background: #c30e2e; }
+    .quick-menu-item img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      transition: filter 0.22s;
+    }
+    .quick-menu-item:hover img { filter: brightness(0) invert(1); }
+    .quick-menu-item span {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: #333;
+      letter-spacing: 0.01em;
+      text-align: center;
+      line-height: 1.4;
+      word-break: keep-all;
+      transition: color 0.22s;
+    }
+    .quick-menu-item:hover span { color: #fff; }
+
+    /* ══════════════════════════════
+       서브 공통 래퍼
+    ══════════════════════════════ */
+    .sub-wrap {
+      width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* ══════════════════════════════
+       1. 타이틀 배너  1600×265
+    ══════════════════════════════ */
+    #title-banner {
+      position: relative;
+      width: 1600px;
+      height: 265px;
+    }
+    #title-banner img {
+      width: 1600px;
+      height: 265px;
+      object-fit: cover;
+    }
+
+    /* ══════════════════════════════
+       2. 타이틀 라벨 + QR 섹션  1600×450
+       배너·QR 겹치는 오른쪽에 340×35 포인트컬러 라벨
+    ══════════════════════════════ */
+    #app-download {
+      position: relative;
+      width: 1600px;
+      height: 450px;
+    }
+    #app-download img {
+      width: 1600px;
+      height: 450px;
+      object-fit: cover;
+    }
+    /* 타이틀 라벨 – 배너와 QR 반반 겹치는 오른쪽 */
+    .title-label {
+      position: absolute;
+      top: -17px;
+      right: 0;
+      width: 340px;
+      height: 35px;
+      background: #c30e2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      z-index: 10;
+    }
+    .title-label .breadcrumb-home {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.03em;
+    }
+    .title-label .breadcrumb-sep {
+      color: rgba(255,255,255,0.5);
+      font-size: 11px;
+    }
+    .title-label .breadcrumb-current {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.04em;
+    }
+
+    /* ══════════════════════════════
+       3. 모바일 앱 화면 안내  1600×1010
+    ══════════════════════════════ */
+    #app-screen {
+      width: 1600px;
+      height: 1010px;
+    }
+    #app-screen img {
+      width: 1600px;
+      height: 1010px;
+      object-fit: cover;
+    }
+
+    /* ══════════════════════════════
+       4. 스탬프 적립  1600×450
+    ══════════════════════════════ */
+    #stamp-section {
+      width: 1600px;
+      height: 450px;
+    }
+    #stamp-section img {
+      width: 1600px;
+      height: 450px;
+      object-fit: cover;
+    }
+
+    /* ══════════════════════════════
+       푸터
+    ══════════════════════════════ */
+    #footer { width: 100%; background: #888686; }
+    .footer-inner {
+      width: 1600px;
+      height: 253px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 140px;
+    }
+    .footer-logo {
+      width: 350px; height: 200px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .footer-logo img { width: 350px; height: 200px; object-fit: contain; }
+    .footer-info {
+      color: #ccc;
+      font-size: 12px;
+      line-height: 2.1;
+      text-align: right;
+    }
+    .footer-info p { white-space: nowrap; }
+    .footer-info .f-addr { color: #ddd; margin-bottom: 2px; }
+    .footer-info .f-lbl { font-weight: 700; color: #fff; margin-right: 4px; }
+    .footer-copyright { margin-top: 6px; font-size: 11px; color: #aaa; letter-spacing: 0.03em; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ 퀵메뉴 ══════════ -->
+<nav id="quick-menu">
+  <a href="javascript:void(0)" class="quick-menu-item">
+    <img src="assets/icons/icon_1.png" alt="가맹점문의" />
+    <span>가맹점<br>문의</span>
+  </a>
+  <a href="javascript:void(0)" class="quick-menu-item">
+    <img src="assets/icons/icon_2.png" alt="단체주문안내" />
+    <span>단체주문<br>안내</span>
+  </a>
+  <a href="javascript:void(0)" class="quick-menu-item">
+    <img src="assets/icons/icon_3.png" alt="이달의직원칭찬" />
+    <span>이달의<br>직원칭찬</span>
+  </a>
+</nav>
+
+<!-- ══════════ HEADER ══════════ -->
+<header id="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <img src="assets/img/logo_03.png" alt="Gong cha" />
+    </a>
+    <div class="nav-item">
+      <a class="nav-link" href="#">Brand</a>
+      <div class="dropdown">
+        <a href="#">브랜드 소개</a>
+        <a href="#">공차의 철학</a>
+        <a href="#">브랜드 히스토리</a>
+        <a href="#">미디어 센터</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a class="nav-link" href="#">Menu</a>
+      <div class="dropdown">
+        <a href="#">음료</a>
+        <a href="#">디저트</a>
+        <a href="#">MD상품</a>
+        <a href="#">시즌 한정 메뉴</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a class="nav-link" href="#">Store</a>
+      <div class="dropdown">
+        <a href="#">매장 찾기</a>
+        <a href="#">신규 오픈 매장</a>
+        <a href="#">가맹 문의</a>
+        <a href="#">해외 매장</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a class="nav-link" href="membership.html" style="color:#c30e2e;">Membership</a>
+      <div class="dropdown">
+        <a href="#">멤버십 소개</a>
+        <a href="#">포인트 안내</a>
+        <a href="#">등급 혜택</a>
+        <a href="membership.html">앱 다운로드</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a class="nav-link" href="#">Benefit</a>
+      <div class="dropdown">
+        <a href="#">진행 중 이벤트</a>
+        <a href="#">쿠폰 다운로드</a>
+        <a href="#">제휴 혜택</a>
+        <a href="#">스탬프</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a class="nav-link" href="#">Event&amp;News</a>
+      <div class="dropdown">
+        <a href="#">이벤트</a>
+        <a href="#">공차 소식</a>
+        <a href="#">보도 자료</a>
+        <a href="#">뉴스레터</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a class="nav-link" href="#">공지사항</a>
+      <div class="dropdown">
+        <a href="#">전체 공지</a>
+        <a href="#">서비스 공지</a>
+        <a href="#">개인정보처리방침</a>
+        <a href="#">이용약관</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ 서브 콘텐츠 ══════════ -->
+<div class="sub-wrap">
+
+  <!-- 1. 타이틀 배너 1600×265 -->
+  <section id="title-banner">
+    <img src="assets/banners/sub/banner_title_1.jpg" alt="MEMBERSHIP" />
+  </section>
+
+  <!-- 2. 앱 다운로드 QR 1600×450 + 타이틀 라벨 오버레이 -->
+  <section id="app-download">
+    <!-- 340×35 포인트컬러 타이틀 라벨 (배너·QR 겹치는 오른쪽) -->
+    <div class="title-label">
+      <span class="breadcrumb-home">홈</span>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">멤버십</span>
+    </div>
+    <img src="assets/banners/sub/banner_sub_1.jpg" alt="공차 멤버십 앱 지금 다운로드" />
+  </section>
+
+  <!-- 3. 모바일 앱 화면 안내 1600×1010 -->
+  <section id="app-screen">
+    <img src="assets/banners/sub/banner_sub_2.jpg" alt="모바일 앱 화면 안내" />
+  </section>
+
+  <!-- 4. 스탬프 적립 & 무료 음료 쿠폰 1600×450 -->
+  <section id="stamp-section">
+    <img src="assets/banners/sub/banner_sub_3.jpg" alt="스탬프 적립 & 무료 음료 쿠폰" />
+  </section>
+
+</div>
+
+<!-- ══════════ 푸터 ══════════ -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="assets/banners/banner_sub_5.jpg" alt="Gong cha Logo" />
+    </div>
+    <div class="footer-gap"></div>
+    <div class="footer-info">
+      <p class="f-addr">서울 종로구 종로33길 15, 8층 (주)공차코리아 대표이사 고희경</p>
+      <p>
+        <span class="f-lbl">사업자등록번호</span>214-88-84534
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span class="f-lbl">통신판매번호</span>2020-서울종로-0966
+      </p>
+      <p>
+        <span class="f-lbl">고객센터</span>02-779-7758
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span class="f-lbl">가맹문의</span>02-3276-9581
+      </p>
+      <p>
+        <span class="f-lbl">운영시간</span>월 ~ 금 (09:00 ~ 18:00) &nbsp;|&nbsp; 주말 및 공휴일 휴무
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span class="f-lbl">점심시간</span>12:00 ~ 13:00
+      </p>
+      <p class="footer-copyright">© GONGCHA KOREA CO.,LTD ALL RIGHTS RESERVED.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
