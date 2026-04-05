@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Membership – Gong cha Korea</title>
+  <title>Recommended Menu – Gong cha Korea</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Raleway:wght@400;600;700&display=swap"
     rel="stylesheet"
@@ -13,7 +13,7 @@
     html { scroll-behavior: smooth; }
     body {
       background: #fbfbfb;
-      color: #333333;
+      color: #333;
       font-family: 'Noto Sans KR', sans-serif;
       overflow-x: hidden;
     }
@@ -124,7 +124,7 @@
       gap: 8px;
       cursor: pointer;
       text-decoration: none;
-      transition: background 0.22s, border-color 0.22s;
+      transition: background 0.22s;
       flex-shrink: 0;
     }
     .quick-menu-item:hover { background: #c30e2e; }
@@ -171,20 +171,8 @@
     }
 
     /* ══════════════════════════════
-       2. 타이틀 라벨 + QR 섹션  1600×450
-       배너·QR 겹치는 오른쪽에 340×35 포인트컬러 라벨
+       타이틀 라벨 340×35 (배너·첫섹션 반반 겹침)
     ══════════════════════════════ */
-    #app-download {
-      position: relative;
-      width: 1600px;
-      height: 450px;
-    }
-    #app-download img {
-      width: 1600px;
-      height: 450px;
-      object-fit: cover;
-    }
-    /* 타이틀 라벨 – 배너와 QR 반반 겹치는 오른쪽 */
     .title-label {
       position: absolute;
       top: -17px;
@@ -203,7 +191,6 @@
       font-size: 12px;
       font-weight: 400;
       color: rgba(255,255,255,0.75);
-      letter-spacing: 0.03em;
     }
     .title-label .breadcrumb-sep {
       color: rgba(255,255,255,0.5);
@@ -218,29 +205,67 @@
     }
 
     /* ══════════════════════════════
-       3. 모바일 앱 화면 안내  1600×1010
+       메뉴 섹션 공통
     ══════════════════════════════ */
-    #app-screen {
-      width: 1600px;
-      height: 1010px;
-    }
-    #app-screen img {
-      width: 1600px;
-      height: 1010px;
-      object-fit: cover;
+    .menu-section {
+      position: relative;
     }
 
-    /* ══════════════════════════════
-       4. 스탬프 적립  1600×450
-    ══════════════════════════════ */
-    #stamp-section {
+    /* 타이틀 바 1600×40 */
+    .section-title {
       width: 1600px;
-      height: 450px;
+      height: 40px;
+      background: #f0eeec;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      border-left: 5px solid #c30e2e;
     }
-    #stamp-section img {
+    .section-title span {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #333;
+      letter-spacing: 0.05em;
+    }
+
+    /* 메뉴 이미지 칸 1600×450 */
+    .menu-row {
       width: 1600px;
       height: 450px;
-      object-fit: cover;
+      background: #ffffff;
+      border: 1px solid #e8e8e8;
+      border-top: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 0;
+    }
+    .menu-card {
+      width: 270px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+    }
+    .menu-card img {
+      width: 220px;
+      height: auto;
+      max-height: 360px;
+      object-fit: contain;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      transition: transform 0.25s;
+    }
+    .menu-card:hover img { transform: translateY(-6px); }
+    .menu-card p {
+      font-size: 12px;
+      font-weight: 500;
+      color: #555;
+      text-align: center;
+      line-height: 1.5;
     }
 
     /* ══════════════════════════════
@@ -308,7 +333,7 @@
       </div>
     </div>
     <div class="nav-item">
-      <a class="nav-link" href="#">Menu</a>
+      <a class="nav-link" href="#" style="color:#c30e2e;">Menu</a>
       <div class="dropdown">
         <a href="#">음료</a>
         <a href="#">디저트</a>
@@ -326,7 +351,7 @@
       </div>
     </div>
     <div class="nav-item">
-      <a class="nav-link" href="membership.html" style="color:#c30e2e;">Membership</a>
+      <a class="nav-link" href="#">Membership</a>
       <div class="dropdown">
         <a href="#">멤버십 소개</a>
         <a href="#">포인트 안내</a>
@@ -369,29 +394,68 @@
 
   <!-- 1. 타이틀 배너 1600×265 -->
   <section id="title-banner">
-    <img src="assets/banners/sub/banner_title_1.jpg" alt="MEMBERSHIP" />
+    <img src="assets/banners/sub/banner_title_2.jpg" alt="RECOMMENDED" />
   </section>
 
-  <!-- 2. 앱 다운로드 QR 1600×450 + 타이틀 라벨 오버레이 -->
-  <section id="app-download">
-    <!-- 340×35 포인트컬러 타이틀 라벨 (배너·QR 겹치는 오른쪽) -->
+  <!-- 2. 여름 시즌 추천 메뉴 – 청량감 -->
+  <div class="menu-section">
     <div class="title-label">
       <span class="breadcrumb-home">홈</span>
       <span class="breadcrumb-sep">›</span>
-      <span class="breadcrumb-current">MEMBERSHIP</span>
+      <span class="breadcrumb-current">Menu</span>
     </div>
-    <img src="assets/banners/sub/banner_sub_1.jpg" alt="공차 멤버십 앱 지금 다운로드" />
-  </section>
+    <div class="section-title"><span>여름 시즌 추천 메뉴</span></div>
+    <div class="menu-row">
+      <div class="menu-card"><img src="assets/img/sub/청량감/img_1.png" alt="청포도스무디" /><p>청포도스무디</p></div>
+      <div class="menu-card"><img src="assets/img/sub/청량감/img_2.png" alt="청귤 요거티 크러쉬+핑크펄" /><p>청귤 요거티 크러쉬+핑크펄</p></div>
+      <div class="menu-card"><img src="assets/img/sub/청량감/img_3.png" alt="청귤 스파클링 티" /><p>청귤 스파클링 티</p></div>
+      <div class="menu-card"><img src="assets/img/sub/청량감/img_4.png" alt="망고 요구르트+화이트펄" /><p>망고 요구르트+화이트펄</p></div>
+    </div>
+  </div>
 
-  <!-- 3. 모바일 앱 화면 안내 1600×1010 -->
-  <section id="app-screen">
-    <img src="assets/banners/sub/banner_sub_2.jpg" alt="모바일 앱 화면 안내" />
-  </section>
+  <!-- 3. 딸기 스페셜 메뉴 – 딸기 -->
+  <div class="menu-section">
+    <div class="section-title"><span>딸기 스페셜 메뉴</span></div>
+    <div class="menu-row">
+      <div class="menu-card"><img src="assets/img/sub/딸기/img_1.png" alt="딸기 말차 밀크티" /><p>딸기 말차 밀크티</p></div>
+      <div class="menu-card"><img src="assets/img/sub/딸기/img_2.png" alt="딸기 쥬얼리 요구르트 크러쉬" /><p>딸기 쥬얼리 요구르트 크러쉬</p></div>
+      <div class="menu-card"><img src="assets/img/sub/딸기/img_3.png" alt="딸기 쥬얼리 밀크티" /><p>딸기 쥬얼리 밀크티</p></div>
+      <div class="menu-card"><img src="assets/img/sub/딸기/img_4.png" alt="그릭요거트&딸기 밀크티 크러쉬" /><p>그릭요거트&amp;딸기 밀크티 크러쉬</p></div>
+    </div>
+  </div>
 
-  <!-- 4. 스탬프 적립 & 무료 음료 쿠폰 1600×450 -->
-  <section id="stamp-section">
-    <img src="assets/banners/sub/banner_sub_3.jpg" alt="스탬프 적립 & 무료 음료 쿠폰" />
-  </section>
+  <!-- 4. 라이트 & 저칼로리 메뉴 – 다이어터 -->
+  <div class="menu-section">
+    <div class="section-title"><span>라이트 &amp; 저칼로리 메뉴</span></div>
+    <div class="menu-row">
+      <div class="menu-card"><img src="assets/img/sub/다이어터/img_1.png" alt="패션 프룻 히비스커스" /><p>패션 프룻 히비스커스</p></div>
+      <div class="menu-card"><img src="assets/img/sub/다이어터/img_2.png" alt="허니 자몽 블랙티" /><p>허니 자몽 블랙티</p></div>
+      <div class="menu-card"><img src="assets/img/sub/다이어터/img_3.png" alt="우롱티" /><p>우롱티</p></div>
+      <div class="menu-card"><img src="assets/img/sub/다이어터/img_4.png" alt="아메리카노" /><p>아메리카노</p></div>
+    </div>
+  </div>
+
+  <!-- 5. 스위트 시그니처 메뉴 – 당폭발 -->
+  <div class="menu-section">
+    <div class="section-title"><span>스위트 시그니처 메뉴</span></div>
+    <div class="menu-row">
+      <div class="menu-card"><img src="assets/img/sub/당폭발/img_1.png" alt="초코바른 스무디" /><p>초코바른 스무디</p></div>
+      <div class="menu-card"><img src="assets/img/sub/당폭발/img_2.png" alt="초코멜로 스무디" /><p>초코멜로 스무디</p></div>
+      <div class="menu-card"><img src="assets/img/sub/당폭발/img_3.png" alt="딸기쿠키 스무디 + 펄" /><p>딸기쿠키 스무디 + 펄</p></div>
+      <div class="menu-card"><img src="assets/img/sub/당폭발/img_4.png" alt="타로 쥬얼리 시그니처 스무디" /><p>타로 쥬얼리 시그니처 스무디</p></div>
+    </div>
+  </div>
+
+  <!-- 6. 취향 저격 인기 메뉴 – 호불호 -->
+  <div class="menu-section">
+    <div class="section-title"><span>취향 저격 인기 메뉴</span></div>
+    <div class="menu-row" style="margin-bottom: 0;">
+      <div class="menu-card"><img src="assets/img/sub/호불호/img_1.png" alt="타로 쥬얼리 시그니처 밀크티" /><p>타로 쥬얼리 시그니처 밀크티</p></div>
+      <div class="menu-card"><img src="assets/img/sub/호불호/img_2.png" alt="제주 그린 스무디" /><p>제주 그린 스무디</p></div>
+      <div class="menu-card"><img src="assets/img/sub/호불호/img_3.png" alt="초코바른 민트 쿠키 스무디" /><p>초코바른 민트 쿠키 스무디</p></div>
+      <div class="menu-card"><img src="assets/img/sub/호불호/img_4.png" alt="흑심 품은 흑당 두부 밀크티 + 펄" /><p>흑심 품은 흑당 두부 밀크티 + 펄</p></div>
+    </div>
+  </div>
 
 </div>
 
